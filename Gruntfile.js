@@ -7,7 +7,8 @@ module.exports = function (grunt) {
         browserify: {
             options: {
                 browserifyOptions: {
-                    debug: true
+                    debug: true,
+                    preserveSymlinks: true
                 },
                 transform: [
                     ['stringify', {
@@ -15,7 +16,18 @@ module.exports = function (grunt) {
                     }],
                 ],
                 plugin: [
-                    'esmify'
+                    'esmify',
+                    function (bundler) {
+                        const resolve = bundler._bresolve;
+                        bundler._bresolve = function (id, options, callback) {
+                            // Browserify's resolver does not support package exports.
+                            return resolve(
+                                id === 'bpmn-moddle' ? 'bpmn-moddle/dist/index.cjs' : id,
+                                options,
+                                callback
+                            );
+                        };
+                    }
                 ]
             },
             watch: {
@@ -53,7 +65,7 @@ module.exports = function (grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: 'node_modules/bpmn-js/dist',
+                        cwd: 'node_modules/mt-schmitt-modeler-ocbpmn/dist',
                         src: ['**/*.*', '!**/*.js'],
                         dest: 'dist/vendor/bpmn-js'
                     }

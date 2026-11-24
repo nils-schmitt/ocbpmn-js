@@ -1,4 +1,4 @@
-import {is} from "bpmn-js/lib/util/ModelUtil";
+import {is} from "mt-schmitt-modeler-ocbpmn/lib/util/ModelUtil";
 import {StateInstance} from "../../dist/types/executionState/StateInstance";
 import {InstanceLink} from "../../dist/types/executionState/InstanceLink";
 import {ExecutionState} from "../../dist/types/executionState/ExecutionState";

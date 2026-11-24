@@ -29,7 +29,7 @@ import MoveModule from 'diagram-js/lib/features/move';
 import PaletteModule from './features/palette';
 import ResizeModule from 'diagram-js/lib/features/resize';
 import SnappingModule from './features/snapping';
-import {is} from "bpmn-js/lib/util/ModelUtil";
+import {is} from "mt-schmitt-modeler-ocbpmn/lib/util/ModelUtil";
 import taskLabelHandling from "./resourceLabelHandling";
 import RoleModeler from "../rolemodeler/RoleModeler";
 import {without} from "min-dash";

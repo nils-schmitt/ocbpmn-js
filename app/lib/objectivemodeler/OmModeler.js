@@ -35,7 +35,7 @@ import ResizeModule from 'diagram-js/lib/features/resize';
 import SnappingModule from './features/snapping';
 import SpaceToolBehaviorModule from './behavior';
 import {nextPosition} from '../util/Util';
-import {is} from "bpmn-js/lib/util/ModelUtil";
+import {is} from "mt-schmitt-modeler-ocbpmn/lib/util/ModelUtil";
 
 var initialDiagram =
     `<?xml version="1.0" encoding="UTF-8"?>
