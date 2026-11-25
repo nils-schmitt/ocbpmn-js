@@ -4,7 +4,7 @@ import inherits from 'inherits';
 
 import {remove as collectionRemove} from 'diagram-js/lib/util/Collections';
 
-import {Label} from 'diagram-js/lib/model';
+import {isLabel} from 'diagram-js/lib/util/ModelUtil';
 
 import {getBusinessObject, is} from '../../../common/util/ModelUtil';
 
@@ -240,7 +240,7 @@ ODUpdater.prototype.updateAttachment = function (context) {
 ODUpdater.prototype.updateParent = function (element, oldParent) {
 
     // do not update label parent
-    if (element instanceof Label) {
+    if (isLabel(element)) {
         return;
     }
 
@@ -258,7 +258,7 @@ ODUpdater.prototype.updateParent = function (element, oldParent) {
 
 ODUpdater.prototype.updateBounds = function (shape) {
 
-    var target = (shape instanceof Label) ? this._getLabel(shape) : shape.businessObject.di;
+    var target = (isLabel(shape)) ? this._getLabel(shape) : shape.businessObject.di;
 
     var bounds = target.bounds;
 
