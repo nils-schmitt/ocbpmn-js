@@ -141,12 +141,11 @@ Mediator.prototype.addedClass = function (clazz) {
 }
 
 Mediator.prototype.confirmClassDeletion = function (clazz) {
-    const affectedLiterals = this.terminationConditionModelerHook.modeler.getLiteralsWithClassId(clazz.id);
     const affectedStates = this.olcModelerHook.modeler.getOlcByClass(clazz).get('Elements').filter(element => is(element, 'olc:State'));
     const affectedDataObjectReferences = this.fragmentModelerHook.modeler.getDataObjectReferencesOfClass(clazz);
     const affectedObjects = this.objectiveModelerHook.modeler.getObjectsOfClass(clazz);
     return confirm('Do you really want to delete class \"' + clazz.name + '\" ?'
-        + '\n' + affectedLiterals.length + ' literal(s), ' + affectedStates.length + ' olc state(s), and '
+        + '\n' + affectedStates.length + ' olc state(s), and '
         + affectedDataObjectReferences.length + ' data object reference(s), and ' + affectedObjects.length + ' object(s) would be deleted as well.');
 }
 
@@ -203,7 +202,6 @@ Mediator.prototype.createInstance = function (name, clazz) {
 // === OLC helpers
 
 Mediator.prototype.olcListChanged = function (olcs) {
-    this.terminationConditionModelerHook.modeler.handleOlcListChanged(olcs);
     this.fragmentModelerHook.modeler.handleOlcListChanged(olcs);
     this.objectiveModelerHook.modeler.handleOlcListChanged(olcs);
 }
@@ -265,7 +263,6 @@ Mediator.prototype.createState = function (name, olc) {
 }
 
 Mediator.prototype.confirmStateDeletion = function (olcState) {
-    const affectedLiterals = this.terminationConditionModelerHook.modeler.getLiteralsWithState(olcState);
     const affectedDataObjectReferences = this.fragmentModelerHook.modeler.getDataObjectReferencesInState(olcState);
     const affectedObjects = this.objectiveModelerHook.modeler.getObjectsInState(olcState);
     return confirm('Do you really want to delete state \"' + olcState.name + '\" ?'
@@ -273,13 +270,11 @@ Mediator.prototype.confirmStateDeletion = function (olcState) {
 }
 
 Mediator.prototype.deletedState = function (olcState) {
-    this.terminationConditionModelerHook.modeler.handleStateDeleted(olcState);
     this.fragmentModelerHook.modeler.handleStateDeleted(olcState);
     this.objectiveModelerHook.modeler.handleStateDeleted(olcState);
 }
 
 Mediator.prototype.renamedState = function (olcState) {
-    this.terminationConditionModelerHook.modeler.handleStateRenamed(olcState);
     this.fragmentModelerHook.modeler.handleStateRenamed(olcState);
     this.objectiveModelerHook.modeler.handleStateRenamed(olcState);
 }
@@ -871,50 +866,3 @@ Mediator.prototype.RoleModelerHook.$inject = [
 ];
 
 Mediator.prototype.RoleModelerHook.isHook = true;
-
-
-// ===  Termination Condition Modeler Hook
-Mediator.prototype.TerminationConditionModelerHook = function (terminationConditionModeler) {
-    AbstractHook.call(this, terminationConditionModeler, 'Termination Condition', 'https://github.com/bptlab/fCM-design-support/wiki/Goal-State');
-    this.mediator.terminationConditionModelerHook = this;
-    this.eventBus = terminationConditionModeler.eventBus;
-
-    this.getRootObject = function () {
-        return this.modeler.getTerminationCondition();
-    }
-
-    this.getNamespace = function () {
-        return this.getRootObject() && namespace(this.getRootObject());
-    }
-
-    this.getGraphics = function (element) {
-        const modeler = this.modeler;
-        return element !== this.getRootObject() ?
-            modeler.getStatements().includes(element) && element.element
-            : modeler._root.closest('.canvas');
-    }
-
-    this.eventBus.on('import.parse.complete', ({warnings}) => {
-        warnings.filter(({message}) => message.startsWith('unresolved reference')).forEach(({
-                                                                                                property,
-                                                                                                value,
-                                                                                                element
-                                                                                            }) => {
-            if (property === 'tc:class') {
-                const olcClass = this.mediator.olcModelerHook.modeler.getOlcById(value);
-                if (!olcClass) {
-                    throw new Error('Could not resolve data class with id ' + value);
-                }
-                element.class = olcClass;
-            } else if (property === 'tc:states') {
-                const state = this.mediator.olcModelerHook.modeler.getStateById(value)
-                if (!state) {
-                    throw new Error('Could not resolve olc state with id ' + value);
-                }
-                element.get('states').push(state);
-            }
-        });
-    });
-}
-
-Mediator.prototype.TerminationConditionModelerHook.isHook = true;

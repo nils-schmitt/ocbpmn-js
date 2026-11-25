@@ -32,24 +32,6 @@ SEVERITY.filter = function (lambda) {
 
 export default [
     {
-        title: 'TC2: Include all relevant data objects in the Termination Condition',
-        id: 'TC2',
-        getViolations(mediator) {
-            const hook = mediator.terminationConditionModelerHook;
-            const literals = hook.modeler.getLiterals();
-            if (literals && literals.length === 0) {
-                return [{
-                    element: hook.getRootObject(),
-                    message: 'Please include at least one data object configuration as literal in the termination condition.'
-                }];
-            } else {
-                return [];
-            }
-        },
-        severity: SEVERITY.ERROR,
-        link: 'https://github.com/bptlab/fCM-design-support/wiki/Goal-State#gs2---include-all-relevant-data-objects-in-the-goal-state'
-    },
-    {
         title: 'F9: Do not use gateways at the beginning of a fragment',
         id: 'F9',
         getViolations(mediator) {

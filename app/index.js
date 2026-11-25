@@ -2,7 +2,6 @@ import FragmentModeler from './lib/fragmentmodeler/FragmentModeler';
 import diagramXML from '../resources/newDiagram.bpmn';
 import newDatamodel from '../resources/emptyBoard.bpmn';
 import OlcModeler from './lib/olcmodeler/OlcModeler';
-import TerminationConditionModeler from './lib/terminationconditionmodeler/TerminationConditionModeler';
 import DataModelModeler from './lib/datamodelmodeler/Modeler';
 import ObjectiveModeler from './lib/objectivemodeler/OmModeler';
 import DependencyModeler from './lib/dependencymodeler/DependencyModeler';
@@ -20,7 +19,6 @@ import {classes as domClasses} from 'min-dom';
 import conferenceProcess from '../resources/conferenceModel/process.bpmn';
 import conferenceDataModel from '../resources/conferenceModel/datamodel.xml';
 import conferenceOLC from '../resources/conferenceModel/olc.xml';
-import conferenceTerminationCondition from '../resources/conferenceModel/terminationCondition.xml';
 
 import Zip from 'jszip';
 import {appendOverlayListeners} from "./lib/util/HtmlUtil";
@@ -109,11 +107,6 @@ var resourceModeler = new RemModeler({
     }]
 });
 
-var terminationConditionModeler = new TerminationConditionModeler(
-    '#terminationcondition-canvas'
-);
-new mediator.TerminationConditionModelerHook(terminationConditionModeler);
-
 
 const errorBar = new ErrorBar(document.getElementById("errorBar"), mediator);
 const checker = new Checker(mediator, errorBar);
@@ -130,7 +123,6 @@ async function loadDebugData() {
     zip.file('fragments.bpmn', conferenceProcess);
     zip.file('dataModel.xml', conferenceDataModel);
     zip.file('olcs.xml', conferenceOLC);
-    zip.file('terminationCondition.xml', conferenceTerminationCondition);
     await importFromZip(zip.generateAsync({type: 'base64'}));
 }
 
@@ -144,7 +136,6 @@ async function createNewDiagram() {
         await roleModeler.createDiagram();
         await resourceModeler.createDiagram();
         await objectiveModeler.createDiagram();
-        terminationConditionModeler.createNew();
         if (LOAD_DUMMY) {
             await loadDebugData();
         }
@@ -182,8 +173,6 @@ async function exportToZip() {
     zip.file('olcs.xml', olcs);
     const resourceModel = (await resourceModeler.saveXML({format: true})).xml;
     zip.file('resourceModel.xml', resourceModel);
-    const terminationCondition = (await terminationConditionModeler.saveXML({format: true})).xml;
-    zip.file('terminationCondition.xml', terminationCondition);
     const dependencyModel = (await dependencyModeler.saveXML({format: true})).xml;
     zip.file('dependencyModel.xml', dependencyModel);
     const roleModel = (await roleModeler.saveXML({format: true})).xml;
@@ -199,7 +188,6 @@ async function importFromZip(zipData) {
         dataModel: zip.file('dataModel.xml'),
         objectiveModel: zip.file('objectiveModel.xml'),
         olcs: zip.file('olcs.xml'),
-        terminationCondition: zip.file('terminationCondition.xml'),
         dependencyModel: zip.file('dependencyModel.xml'),
         resourceModel: zip.file('resourceModel.xml'),
         roleModel: zip.file('roleModel.xml')
@@ -214,7 +202,6 @@ async function importFromZip(zipData) {
     await roleModeler.importXML(await files.roleModel.async("string"));
     await olcModeler.importXML(await files.olcs.async("string"));
     await fragmentModeler.importXML(await files.fragments.async("string"));
-    await terminationConditionModeler.importXML(await files.terminationCondition.async("string"));
     await objectiveModeler.importXML(await files.objectiveModel.async("string"));
     await resourceModeler.importXML(await files.resourceModel.async("string"));
     checker.activate();
@@ -301,9 +288,6 @@ async function navigationDropdown() {
         modelers.sort((a, b) => {
             return a.rank - b.rank
         });
-        if (constructionMode) {
-            modelers = modelers.filter(object => object !== terminationConditionModeler);
-        }
         var valueBefore = selectOlcComponent.value;
         selectOlcMenu.populate(modelers, modeler => {
             showModeler(modeler);
@@ -314,11 +298,7 @@ async function navigationDropdown() {
     }
 
     function showModeler(modeler) {
-        if (modeler === terminationConditionModeler) {
-            focus(modeler._root.closest('.canvas'));
-        } else {
-            focus(modeler.get('canvas')._container.closest('.canvas'));
-        }
+        focus(modeler.get('canvas')._container.closest('.canvas'));
     }
 
     function showSelectOlcMenu() {
