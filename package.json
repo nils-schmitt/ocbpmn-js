@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "bpmn-moddle": "^9.0.1",
-    "diagram-js": "^7.8.1",
+    "diagram-js": "^15.3.0",
     "diagram-js-direct-editing": "^1.6.3",
     "exceljs": "^4.3.0",
     "grunt-shell": "^4.0.0",

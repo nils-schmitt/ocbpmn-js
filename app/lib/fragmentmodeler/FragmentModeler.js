@@ -11,7 +11,7 @@ import taskRenderer from "./draw";
 
 export default function FragmentModeler(options) {
     const customModules = [
-        fragmentPaletteModule,
+        // fragmentPaletteModule,
         customModelingModule,
         taskRenderer,
         taskLabelHandling,

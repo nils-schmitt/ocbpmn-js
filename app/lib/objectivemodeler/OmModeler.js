@@ -8,7 +8,6 @@ import NavigatedViewer from './NavigatedViewer';
 
 import KeyboardMoveModule from 'diagram-js/lib/navigation/keyboard-move';
 import MoveCanvasModule from 'diagram-js/lib/navigation/movecanvas';
-import TouchModule from 'diagram-js/lib/navigation/touch';
 import ZoomScrollModule from 'diagram-js/lib/navigation/zoomscroll';
 
 import AlignElementsModule from 'diagram-js/lib/features/align-elements';
@@ -89,7 +88,6 @@ OmModeler.prototype._interactionModules = [
     KeyboardMoveModule,
     MoveCanvasModule,
     OmButtonBarModule,
-    TouchModule,
     ZoomScrollModule
 ];
 
