@@ -36,9 +36,6 @@ window.mediator = mediator;
 
 var olcModeler = new OlcModeler({
     container: document.querySelector('#olc-canvas'),
-    keyboard: {
-        bindTo: document.querySelector('#olc-canvas')
-    },
     additionalModules: [{
         __init__: ['mediator'],
         mediator: ['type', mediator.OlcModelerHook]
@@ -47,9 +44,6 @@ var olcModeler = new OlcModeler({
 
 var dependencyModeler = new DependencyModeler({
     container: document.querySelector('#dependencymodel-canvas'),
-    keyboard: {
-        bindTo: document.querySelector('#dependencymodel-canvas')
-    },
     additionalModules: [{
         __init__: ['mediator'],
         mediator: ['type', mediator.DependencyModelerHook]
@@ -58,9 +52,6 @@ var dependencyModeler = new DependencyModeler({
 
 var dataModeler = new DataModelModeler({
     container: '#datamodel-canvas',
-    keyboard: {
-        bindTo: document.querySelector('#datamodel-canvas')
-    },
     additionalModules: [{
         __init__: ['mediator'],
         mediator: ['type', mediator.DataModelerHook]
@@ -69,9 +60,6 @@ var dataModeler = new DataModelModeler({
 
 var objectiveModeler = new ObjectiveModeler({
     container: '#objectivemodel-canvas',
-    keyboard: {
-        bindTo: document.querySelector('#objectivemodel-canvas')
-    },
     additionalModules: [{
         __init__: ['mediator'],
         mediator: ['type', mediator.ObjectiveModelerHook]
@@ -80,7 +68,6 @@ var objectiveModeler = new ObjectiveModeler({
 
 var fragmentModeler = new FragmentModeler({
     container: '#fragments-canvas',
-    keyboard: {bindTo: document.querySelector('#fragments-canvas')},
     additionalModules: [{
         __init__: ['mediator'],
         mediator: ['type', mediator.FragmentModelerHook]
@@ -89,7 +76,6 @@ var fragmentModeler = new FragmentModeler({
 
 var roleModeler = new RoleModeler({
     container: '#rolemodel-canvas',
-    keyboard: {bindTo: document.querySelector('#rolemodel-canvas')},
     additionalModules: [{
         __init__: ['mediator'],
         mediator: ['type', mediator.RoleModelerHook]
@@ -98,9 +84,6 @@ var roleModeler = new RoleModeler({
 
 var resourceModeler = new RemModeler({
     container: '#resourcemodel-canvas',
-    keyboard: {
-        bindTo: document.querySelector('#resourcemodel-canvas')
-    },
     additionalModules: [{
         __init__: ['mediator'],
         mediator: ['type', mediator.ResourceModelerHook]
