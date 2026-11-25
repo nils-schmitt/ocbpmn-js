@@ -16,7 +16,7 @@ export default class Checker {
         mediator.executed(['shape.create', 'shape.delete', 'element.updateLabel', 'connection.create', 'connection.delete', 'element.updateProperties'], event => {
             this.evaluateAll();
         });
-        mediator.on([OlcEvents.SELECTED_OLC_CHANGED,], event => {
+        mediator.on([OlcEvents.SELECTED_OLC_CHANGED, 'element.changed'], event => {
             this.evaluateAll();
         });
         this.errorBar = errorBar;
